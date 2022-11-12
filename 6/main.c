@@ -2,7 +2,7 @@
 
 // Функция print_result для вывода результата.
 void print_result(char symbols[], int values[]) {
-    printf("Number of occurrences of different punctuation marks in a given ASCII string:\n");
+    printf("\nNumber of occurrences of different punctuation marks in a given ASCII string:\n");
     for (int i = 0; i < 8; ++i) {
         printf("%c\t%d\n", symbols[i], values[i]);
     }
@@ -22,8 +22,9 @@ void calculate(const char str[], const char symbols[], int values[], int length)
 
 // Точка входа в программу.
 int main() {
+    int capacity = 100000;
     // Строка str.
-    char str[1000];
+    char str[capacity];
     int i = 0;
     int ch;
     // Ввод строки.
@@ -31,6 +32,9 @@ int main() {
     do {
         ch = fgetc(stdin);
         str[i++] = ch;
+        if (i >= capacity) {
+            break;
+        }
     } while(ch != -1);
     str[i-1] = '\0';
     int length = i - 1;

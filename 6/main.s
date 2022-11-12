@@ -2,7 +2,7 @@
     
     .section .rodata
 .LC0:
-        .string "Number of occurrences of different punctuation marks in a given ASCII string:"
+        .string "\nNumber of occurrences of different punctuation marks in a given ASCII string:"
 .LC1:
         .string "%c\t%d\n"
         
@@ -112,47 +112,85 @@ calculate:
 main:
         push    rbp
         mov     rbp, rsp
-        sub     rsp, 1072
-        mov     DWORD PTR [rbp-4], 0
+        push    rbx
+        sub     rsp, 88
+        mov     rax, rsp
+        mov     rbx, rax
+        mov     DWORD PTR [rbp-24], 100000
+        mov     eax, DWORD PTR [rbp-24]
+        movsx   rdx, eax
+        sub     rdx, 1
+        mov     QWORD PTR [rbp-32], rdx
+        movsx   rdx, eax
+        mov     r8, rdx
+        mov     r9d, 0
+        movsx   rdx, eax
+        mov     rsi, rdx
+        mov     edi, 0
+        cdqe
+        mov     edx, 16
+        sub     rdx, 1
+        add     rax, rdx
+        mov     edi, 16
+        mov     edx, 0
+        div     rdi
+        imul    rax, rax, 16
+        sub     rsp, rax
+        mov     rax, rsp
+        add     rax, 0
+        mov     QWORD PTR [rbp-40], rax
+        mov     DWORD PTR [rbp-20], 0
         lea     rdi, .LC2[rip]
         call    puts
-.L12:
+.L14:
         mov     rax, QWORD PTR stdin[rip]
         mov     rdi, rax
         call    fgetc
-        mov     DWORD PTR [rbp-8], eax
-        mov     eax, DWORD PTR [rbp-4]
+        mov     DWORD PTR [rbp-44], eax
+        mov     eax, DWORD PTR [rbp-20]
         lea     edx, [rax+1]
-        mov     DWORD PTR [rbp-4], edx
-        mov     edx, DWORD PTR [rbp-8]
+        mov     DWORD PTR [rbp-20], edx
+        mov     edx, DWORD PTR [rbp-44]
+        mov     ecx, edx
+        mov     rdx, QWORD PTR [rbp-40]
         cdqe
-        mov     BYTE PTR [rbp-1024+rax], dl
-        cmp     DWORD PTR [rbp-8], -1
-        jne     .L12
-        mov     eax, DWORD PTR [rbp-4]
+        mov     BYTE PTR [rdx+rax], cl
+        mov     eax, DWORD PTR [rbp-20]
+        cmp     eax, DWORD PTR [rbp-24]
+        jge     .L16
+        cmp     DWORD PTR [rbp-44], -1
+        jne     .L14
+        jmp     .L13
+.L16:
+        nop
+.L13:
+        mov     eax, DWORD PTR [rbp-20]
         sub     eax, 1
+        mov     rdx, QWORD PTR [rbp-40]
         cdqe
-        mov     BYTE PTR [rbp-1024+rax], 0
-        mov     eax, DWORD PTR [rbp-4]
+        mov     BYTE PTR [rdx+rax], 0
+        mov     eax, DWORD PTR [rbp-20]
         sub     eax, 1
-        mov     DWORD PTR [rbp-12], eax
+        mov     DWORD PTR [rbp-48], eax
         movabs  rax, 2965689766566898734
-        mov     QWORD PTR [rbp-1032], rax
-        mov     QWORD PTR [rbp-1072], 0
-        mov     QWORD PTR [rbp-1064], 0
-        mov     QWORD PTR [rbp-1056], 0
-        mov     QWORD PTR [rbp-1048], 0
-        mov     ecx, DWORD PTR [rbp-12]
-        lea     rdx, [rbp-1072]
-        lea     rsi, [rbp-1032]
-        lea     rax, [rbp-1024]
+        mov     QWORD PTR [rbp-56], rax
+        mov     QWORD PTR [rbp-96], 0
+        mov     QWORD PTR [rbp-88], 0
+        mov     QWORD PTR [rbp-80], 0
+        mov     QWORD PTR [rbp-72], 0
+        mov     ecx, DWORD PTR [rbp-48]
+        lea     rdx, [rbp-96]
+        lea     rsi, [rbp-56]
+        mov     rax, QWORD PTR [rbp-40]
         mov     rdi, rax
         call    calculate
-        lea     rdx, [rbp-1072]
-        lea     rax, [rbp-1032]
+        lea     rdx, [rbp-96]
+        lea     rax, [rbp-56]
         mov     rsi, rdx
         mov     rdi, rax
         call    print_result
+        mov     rsp, rbx
         mov     eax, 0
+        mov     rbx, QWORD PTR [rbp-8]
         leave
         ret
