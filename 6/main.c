@@ -2,8 +2,7 @@
 
 // Функция print_result для вывода результата.
 void print_result(char symbols[], int values[]) {
-    printf("Число вхождений различных знаков препинания в заданной ASCII-строке\n");
-
+    printf("Number of occurrences of different punctuation marks in a given ASCII string:\n");
     for (int i = 0; i < 8; ++i) {
         printf("%c\t%d\n", symbols[i], values[i]);
     }
@@ -28,6 +27,7 @@ int main() {
     int i = 0;
     int ch;
     // Ввод строки.
+    printf("String input:\n");
     do {
         ch = fgetc(stdin);
         str[i++] = ch;
@@ -37,7 +37,6 @@ int main() {
 
     // Массив со знаками препинания.
     char symbols[8] = {'.', ',', ';', ':', '!', '?', '(', ')'};
-
     // Массив с числом вхождений каждого знака из массива symbols.
     int values[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
