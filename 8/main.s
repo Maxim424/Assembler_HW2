@@ -5,57 +5,93 @@
 	.align 8
 .LC0:
 	.string	"You need to specify 2 files in the command line arguments: input and output"
+	.section	.rodata.str1.1,"aMS",@progbits,1
+.LC2:
+	.string	"Program execution time:\t%f\n"
 	.section	.text.startup,"ax",@progbits
 	.p2align 4
 	.globl	main
 	.type	main, @function
 main:
 	push	rbp
+	lea	eax, -1[rdi]
 	mov	rbp, rsp
 	push	r15
 	push	r14
 	push	r13
 	push	r12
 	push	rbx
-	lea	ebx, -1[rdi]
-	sub	rsp, 72
-	mov	r13, rsp
-	sub	rsp, 100000
-	cmp	ebx, 2
-	ja	.L11
-	mov	r12, rsi
-	mov	r14, rsp
+	sub	rsp, 88
+	mov	QWORD PTR -120[rbp], rsi
+	mov	QWORD PTR -104[rbp], rsp
+	sub	rsp, 500000
+	mov	DWORD PTR -108[rbp], eax
+	cmp	eax, 2
+	ja	.L15
+	mov	r12, rsp
 	cmp	edi, 1
-	je	.L12
+	je	.L16
 	cmp	edi, 2
-	je	.L13
-	mov	edx, 100000
+	je	.L17
+	mov	rdi, QWORD PTR -120[rbp]
+	mov	edx, 500000
 	mov	rsi, rsp
-	mov	rdi, r12
 	call	get_line_from_file@PLT
-	mov	ecx, eax
+	mov	ebx, eax
 .L5:
-	lea	r8, -80[rbp]
-	lea	r15, -88[rbp]
 	pxor	xmm0, xmm0
-	mov	rdi, r14
+	lea	r14, -80[rbp]
+	lea	r13, -88[rbp]
+	xor	r15d, r15d
 	movabs	rax, 2965689766566898734
-	mov	rdx, r8
-	mov	rsi, r15
-	mov	QWORD PTR -104[rbp], r8
-	mov	QWORD PTR -88[rbp], rax
 	movups	XMMWORD PTR -80[rbp], xmm0
+	mov	QWORD PTR -88[rbp], rax
 	movups	XMMWORD PTR -64[rbp], xmm0
+	call	clock@PLT
+	mov	QWORD PTR -128[rbp], rax
+	.p2align 4,,10
+	.p2align 3
+.L9:
+	add	r15d, 1
+	cmp	r15d, 1
+	jne	.L18
+.L7:
+	mov	ecx, ebx
+	mov	rdx, r14
+	mov	rsi, r13
+	mov	rdi, r12
 	call	calculate@PLT
-	cmp	ebx, 2
-	mov	r8, QWORD PTR -104[rbp]
+	add	r15d, 1
+	cmp	r15d, 1
 	je	.L7
-	mov	rsi, r8
-	mov	rdi, r15
+.L18:
+	pxor	xmm0, xmm0
+	mov	ecx, ebx
+	mov	rdx, r14
+	mov	rsi, r13
+	movups	XMMWORD PTR [r14], xmm0
+	mov	rdi, r12
+	movups	XMMWORD PTR 16[r14], xmm0
+	call	calculate@PLT
+	cmp	r15d, 1000
+	jne	.L9
+	call	clock@PLT
+	pxor	xmm0, xmm0
+	sub	rax, QWORD PTR -128[rbp]
+	lea	rsi, .LC2[rip]
+	cvtsi2sd	xmm0, rax
+	mov	edi, 1
+	mov	eax, 1
+	divsd	xmm0, QWORD PTR .LC1[rip]
+	call	__printf_chk@PLT
+	cmp	DWORD PTR -108[rbp], 2
+	je	.L10
+	mov	rsi, r14
+	mov	rdi, r13
 	call	print_result_to_console@PLT
-.L8:
+.L11:
+	mov	rsp, QWORD PTR -104[rbp]
 	xor	eax, eax
-	mov	rsp, r13
 .L1:
 	lea	rsp, -40[rbp]
 	pop	rbx
@@ -65,32 +101,37 @@ main:
 	pop	r15
 	pop	rbp
 	ret
-.L13:
-	mov	esi, 100000
+.L17:
+	mov	esi, 500000
 	mov	rdi, rsp
 	call	generate_str@PLT
-	mov	ecx, eax
+	mov	ebx, eax
 	jmp	.L5
-.L7:
-	mov	rdx, r12
-	mov	rsi, r8
-	mov	rdi, r15
+.L10:
+	mov	rdx, QWORD PTR -120[rbp]
+	mov	rsi, r14
+	mov	rdi, r13
 	call	print_result_to_file@PLT
-	jmp	.L8
-.L11:
+	jmp	.L11
+.L15:
 	lea	rsi, .LC0[rip]
 	mov	edi, 1
 	xor	eax, eax
 	call	__printf_chk@PLT
 	mov	eax, 1
-	mov	rsp, r13
+	mov	rsp, QWORD PTR -104[rbp]
 	jmp	.L1
-.L12:
-	mov	esi, 100000
+.L16:
+	mov	esi, 500000
 	mov	rdi, rsp
 	call	get_line_from_console@PLT
-	mov	ecx, eax
+	mov	ebx, eax
 	jmp	.L5
 	.size	main, .-main
+	.section	.rodata.cst8,"aM",@progbits,8
+	.align 8
+.LC1:
+	.long	0
+	.long	1093567616
 	.ident	"GCC: (GNU) 10.3.0"
 	.section	.note.GNU-stack,"",@progbits
