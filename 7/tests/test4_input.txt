@@ -1,0 +1,6 @@
+result_estimation = math_round (
+	(
+        	0.15 * seminars_estimation
+        	+ 0.6 * tasks_estimation
+	) / 0.75 
+)

@@ -1,0 +1,9 @@
+Number of occurrences of different punctuation marks in a given ASCII string:
+.       129
+,       290
+;       49
+:       41
+!       37
+?       37
+(       0
+)       0

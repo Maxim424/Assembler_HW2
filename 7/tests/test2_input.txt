@@ -1,0 +1,6 @@
+void print_result(char symbols[], int values[]) {
+    printf("\nNumber of occurrences of different punctuation marks in a given ASCII string:\n");
+    for (int i = 0; i < 8; ++i) {
+        printf("%c\t%d\n", symbols[i], values[i]);
+    }
+}
